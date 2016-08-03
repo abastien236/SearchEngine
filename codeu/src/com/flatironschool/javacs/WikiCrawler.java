@@ -54,26 +54,25 @@ public class WikiCrawler {
 	 * @throws IOException
 	 */
 	public String crawl(boolean testing) throws IOException {
+		
 		if (queue.isEmpty()) {
 			return null;
 		}
 		String url = queue.poll();
 		System.out.println("Crawling " + url);
 
-		if (testing==false && index.isIndexed(url)) {
+		if (index.isIndexed(url)) {
 			System.out.println("Already indexed.");
 			return null;
 		}
 		
 		Elements paragraphs;
-		if (testing) {
-			paragraphs = wf.readWikipedia(url);
-		} else {
-			paragraphs = wf.fetchWikipedia(url);
-		}
+		
+		paragraphs = wf.fetchWikipedia(url);
 		index.indexPage(url, paragraphs);
 		queueInternalLinks(paragraphs);		
 		return url;
+	
 	}
 
 	/**
@@ -98,10 +97,10 @@ public class WikiCrawler {
 		for (Element elt: elts) {
 			String relURL = elt.attr("href");
 			
-			if (relURL.startsWith("/wiki/")) {
-				String absURL = "https://en.wikipedia.org" + relURL;
+			if (relURL.contains("nytimes")) {
+			//	String absURL = "https://en.wikipedia.org" + relURL;
 				//System.out.println(absURL);
-				queue.offer(absURL);
+				queue.offer(relURL);
 			}
 		}
 	}
@@ -111,7 +110,7 @@ public class WikiCrawler {
 		// make a WikiCrawler
 		Jedis jedis = JedisMaker.make();
 		JedisIndex index = new JedisIndex(jedis); 
-		String source = "https://en.wikipedia.org/wiki/Java_(programming_language)";
+		String source = "http://www.nytimes.com/2016/08/03/technology/instagram-stories-snapchat-facebook.html?ref=technology";
 		WikiCrawler wc = new WikiCrawler(source, index);
 		
 		// for testing purposes, load up the queue
@@ -123,10 +122,11 @@ public class WikiCrawler {
 		do {
 			res = wc.crawl(false);
 		} while (res == null);
-		
 		Map<String, Integer> map = index.getCounts("the");
 		for (Entry<String, Integer> entry: map.entrySet()) {
 			System.out.println(entry);
 		}
+		//index.deleteAllKeys();
+		
 	}
 }

@@ -28,7 +28,7 @@ public class JedisIndex {
 	 * @param jedis
 	 */
 	public JedisIndex(Jedis jedis) {
-		this.jedis = jedis;
+		this.jedis = new Jedis("localhost");
 	}
 	
 	/**

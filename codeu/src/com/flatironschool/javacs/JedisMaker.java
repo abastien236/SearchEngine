@@ -23,6 +23,9 @@ public class JedisMaker {
 	 * @throws IOException
 	 */
 	public static Jedis make() throws IOException {
+
+		//This was simplified because I am using my local hose. Port number is default and not necessary
+
 		//Here's an older version that read the auth code from an environment variable.
 		String host = "localhost";
 		int port = 6379;

@@ -65,7 +65,7 @@ public class WikiCrawler {
 			System.out.println("Already indexed.");
 			return null;
 		}
-		
+		//Simplified since we are not using test case. Can be added back for testing purposes.
 		Elements paragraphs;
 		
 		paragraphs = wf.fetchWikipedia(url);
@@ -96,7 +96,7 @@ public class WikiCrawler {
 		Elements elts = paragraph.select("a[href]");
 		for (Element elt: elts) {
 			String relURL = elt.attr("href");
-			
+			// change based on what is being crawled.
 			if (relURL.contains("nytimes")) {
 			//	String absURL = "https://en.wikipedia.org" + relURL;
 				//System.out.println(absURL);
@@ -110,6 +110,7 @@ public class WikiCrawler {
 		// make a WikiCrawler
 		Jedis jedis = JedisMaker.make();
 		JedisIndex index = new JedisIndex(jedis); 
+		//Anwaar- Changing the Source to specified article.
 		String source = "http://www.nytimes.com/2016/08/03/technology/instagram-stories-snapchat-facebook.html?ref=technology";
 		WikiCrawler wc = new WikiCrawler(source, index);
 		
@@ -126,6 +127,7 @@ public class WikiCrawler {
 		for (Entry<String, Integer> entry: map.entrySet()) {
 			System.out.println(entry);
 		}
+		//Anwaar - Use this to Free the index
 		//index.deleteAllKeys();
 		
 	}

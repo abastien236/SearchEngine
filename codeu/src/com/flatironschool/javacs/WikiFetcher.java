@@ -32,6 +32,7 @@ public class WikiFetcher {
 
 		// select the content text and pull out the paragraphs.
 		Element content = doc.getElementById("main");
+		//Anwaar - Change id to "mw-content-text" for wiki pages. 
 
 		// TODO: avoid selecting paragraphs from sidebars and boxouts
 		Elements paras = content.select("p");

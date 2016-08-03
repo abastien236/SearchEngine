@@ -28,6 +28,7 @@ public class JedisIndex {
 	 * @param jedis
 	 */
 	public JedisIndex(Jedis jedis) {
+		//Anwaar - Had to change to "localhost" to use local instance of Redis
 		this.jedis = new Jedis("localhost");
 	}
 	

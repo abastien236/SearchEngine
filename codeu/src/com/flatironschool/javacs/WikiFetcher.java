@@ -1,4 +1,4 @@
-package com.flatironschool.javacs;
+package CLIapplication.javacs;
 
 import java.io.File;
 import java.io.IOException;
@@ -31,11 +31,32 @@ public class WikiFetcher {
 		Document doc = conn.get();
 
 		// select the content text and pull out the paragraphs.
+		//Anwaar - Change id to "main" for NYT pages. 
 		Element content = doc.getElementById("mw-content-text");
+		//Element content = doc.getElementById("main");
 
 		// TODO: avoid selecting paragraphs from sidebars and boxouts
 		Elements paras = content.select("p");
 		return paras;
+	}
+
+	public void fetchWikipediaPic(String url) throws IOException{
+		sleepIfNeeded();
+		Connection conn = Jsoup.connect(url);
+		Document doc = conn.get();
+    	Element body = doc.body();
+    	Elements tables = body.getElementsByTag("table");
+  	  	for (Element table : tables) {
+        	if (table.className().contains("infobox")==true) {
+            	//Elements e = table.getElementsByClass("image"));
+            	//System.out.println(url);
+			    String stub = table.getElementsByClass("image").first().attr("href");
+			    stub = stub.substring(5);
+				System.out.println(url + "#/media" + stub);
+            	return;
+            	//String image = doc.select("img").first().text();
+        	}
+    	}
 	}
 
 	/**
